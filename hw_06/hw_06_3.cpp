@@ -5,7 +5,7 @@
 第二行是m个给定的小写字母。
 输出
 每行一种结果（字典序排列），字母之间用空格隔开。*/
-//此题
+//此题与第5周第3题很相似
 #include <iostream>
 #include <algorithm>
 using namespace std;
