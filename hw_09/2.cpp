@@ -1,9 +1,7 @@
 /*任务描述
 古代中国追求对称美，对字符串要求亦是如此。给定一个长度为N的字符串，你可以认为他们是首尾相连的，如果经过平移，这个字符串能否形成对称的效果？如果可以，请输出对称的字符串，否则输出False。如果对称的字符串有多种可能，那么只输出取向右平移次数最少的字符串。要求：用指针来进行处理。
-
 输入
 先输入一个正整数N，表示接下来会输入N个字符，每个字符用空格隔开。
-
 输出
 经过平移后对称的字符串或者False
 
@@ -21,76 +19,77 @@ b a b
 a b c c
 输出：
 False*/
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<iostream>
-//ToDo
+#include <bits/stdc++.h>
+using namespace std;
+
 char* GetStrings(int n)
 {
-    char* str_list = (char*)malloc((n) * sizeof(char));
+    char* str_list = new char[2 * n];
     for (int i = 0; i < n; i++)
     {
-        std::cin >> (str_list + i);
+        cin >> *(str_list + i);
+        *(str_list + i + n) = *(str_list + i);
     }
     return str_list;
 }
-//ToDo
-//Attention!! str_list[i] is forbidden!!
+
 void Func(char* str_list, int n)
 {
-    int length = n;
     if (n == 1)
     {
-        std::cout << *(str_list);
+        cout << *(str_list) << endl;
         return;
     }
-    char* str_1 = (char*)malloc((length) * sizeof(char));
-    int judge = 1;
-    for (int k = 1; k <= length; k++)
+    int times_fail = 0;
+    bool judge = true;
+    for (int i = 0; i < n - 1; i++)
     {
-        for(int i = 0; i < length; i++)
+        // for (int j = i; j < i + n; j++)
+        // {
+        //     if (*(str_list + j) != *(str_list + n - 1  + 2 * i- j))
+        //     {
+        //         judge = false;
+        //         times_fail++;
+        //         break;
+        //     }
+        // }
+        int j = n - i;
+        while (j <= 3 * n - 1  - 2 * i- j)
         {
-            *(str_1 + (k + i) % length) = *(str_list + i);
-        }
-        for (int j = 0; j < length; j++)
-        {
-            if (*(str_1 + j) != *(str_1 + length - 1 - j))//?
+            if (*(str_list + j) != *(str_list + 3 * n - 1  - 2 * i- j))
             {
-                judge = 0;
+                judge = false;
+                times_fail++;
                 break;
             }
+            j++;
         }
-        if (judge == 1)
+        if (judge == true)
         {
-            for (int x = 0; x < length; x++)
+            for (int k = n - i; k < 2 * n - i; k++)
             {
-                if (x == length - 1)
+                if (k != 2 * n - i - 1)
                 {
-                    printf("%c", *(str_1 + x));
+                    cout << *(str_list + k) << " ";
                 }
                 else
                 {
-                    printf("%c", *(str_1 + x));
-                    printf("%c",' ');
+                    cout << *(str_list + k) << endl;
                 }
             }
-            free(str_1);
-            free(str_list);
+            delete[] str_list;
             return;
         }
+        judge = true;
     }
-    printf("False");
-    free(str_1);
-    free(str_list);
-    return;
+    cout << "False" << endl;
+    delete[] str_list;
 }
 
 int main()
 {
     int n;
-    std::cin >> n;
-    char* str_list = GetStrings(n);
-    Func(str_list,n);
+    cin >> n;
+    Func(GetStrings(n), n);
     return 0;
 }
